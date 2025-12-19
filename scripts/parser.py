@@ -194,28 +194,30 @@ def update_stats(date, data):
         'reading': data['reading']['title'] if data['reading']['title'] else None
     }
     
+    # 기존 날짜 데이터가 있으면 통계에서 빼기 (중복 방지)
+    old_data = stats['daily'].get(date_str, {})
+    
     # 주간 통계
     if week_str not in stats['weekly']:
         stats['weekly'][week_str] = {'fitness': 0, 'english': 0, 'research': 0, 'days': 0}
-    stats['weekly'][week_str]['fitness'] += data['fitness']['time']
-    stats['weekly'][week_str]['english'] += data['english']['time']
-    stats['weekly'][week_str]['research'] += data['research']['time']
-    stats['weekly'][week_str]['days'] = len([d for d in stats['daily'] if d.startswith(week_str.replace('W', '-W'))])
+    # 기존 데이터 빼고 새 데이터 더하기
+    stats['weekly'][week_str]['fitness'] = stats['weekly'][week_str]['fitness'] - old_data.get('fitness', 0) + data['fitness']['time']
+    stats['weekly'][week_str]['english'] = stats['weekly'][week_str]['english'] - old_data.get('english', 0) + data['english']['time']
+    stats['weekly'][week_str]['research'] = stats['weekly'][week_str]['research'] - old_data.get('research', 0) + data['research']['time']
     
     # 월간 통계
     if month_str not in stats['monthly']:
         stats['monthly'][month_str] = {'fitness': 0, 'english': 0, 'research': 0, 'days': 0}
-    stats['monthly'][month_str]['fitness'] += data['fitness']['time']
-    stats['monthly'][month_str]['english'] += data['english']['time']
-    stats['monthly'][month_str]['research'] += data['research']['time']
-    stats['monthly'][month_str]['days'] = len([d for d in stats['daily'] if d.startswith(month_str)])
+    stats['monthly'][month_str]['fitness'] = stats['monthly'][month_str]['fitness'] - old_data.get('fitness', 0) + data['fitness']['time']
+    stats['monthly'][month_str]['english'] = stats['monthly'][month_str]['english'] - old_data.get('english', 0) + data['english']['time']
+    stats['monthly'][month_str]['research'] = stats['monthly'][month_str]['research'] - old_data.get('research', 0) + data['research']['time']
     
     # 연간 통계
     if year_str not in stats['yearly']:
         stats['yearly'][year_str] = {'fitness': 0, 'english': 0, 'research': 0, 'days': 0}
-    stats['yearly'][year_str]['fitness'] += data['fitness']['time']
-    stats['yearly'][year_str]['english'] += data['english']['time']
-    stats['yearly'][year_str]['research'] += data['research']['time']
+    stats['yearly'][year_str]['fitness'] = stats['yearly'][year_str]['fitness'] - old_data.get('fitness', 0) + data['fitness']['time']
+    stats['yearly'][year_str]['english'] = stats['yearly'][year_str]['english'] - old_data.get('english', 0) + data['english']['time']
+    stats['yearly'][year_str]['research'] = stats['yearly'][year_str]['research'] - old_data.get('research', 0) + data['research']['time']
     stats['yearly'][year_str]['days'] = len([d for d in stats['daily'] if d.startswith(year_str)])
     
     # 독서 목록
@@ -254,6 +256,10 @@ def update_stats(date, data):
 def update_book_log(data):
     """독서 로그 업데이트"""
     if not data['reading']['title']:
+        return
+    
+    # 제목이 비어있거나 공백만 있으면 무시
+    if not data['reading']['title'].strip():
         return
     
     books_dir = "books"
