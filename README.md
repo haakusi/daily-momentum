@@ -8,26 +8,74 @@
 
 ---
 
-## 🎮 첫 기록 시작하기
+## 📊 이번 주 (Week 51)
+
+<table>
+<tr>
+<td align="center"><b>💪 헬스</b></td>
+<td align="center"><b>🗣️ 영어</b></td>
+<td align="center"><b>🔬 연구</b></td>
+</tr>
+<tr>
+<td align="center">3/3회<br>4h 30m</td>
+<td align="center">3/4회<br>2h 15m</td>
+<td align="center">3/5회<br>9h</td>
+</tr>
+<tr>
+<td align="center">🟩🟩🟩🟩🟩</td>
+<td align="center">🟩🟩🟩⬜⬜</td>
+<td align="center">🟩🟩🟩⬜⬜</td>
+</tr>
+</table>
+
+## 📈 이번 달 (12월)
+
+| 💪 헬스 | 🗣️ 영어 | 🔬 연구 |
+|:---:|:---:|:---:|
+| 4h 30m | 2h 15m | 9h |
+| 3일 | 3일 | 3일 |
+
+## 🏆 2025년 통계
 
 <div align="center">
 
-### **[➕ 오늘 기록하기](../../issues/new/choose)**
-
-첫 기록을 남기면 여기에 통계가 자동으로 표시됩니다!
+| 총 활동 일수 | 헬스 | 영어 | 연구 |
+|:---:|:---:|:---:|:---:|
+| **3일** | 4h 30m | 2h 15m | 9h |
 
 </div>
 
+## 📅 최근 7일
+
+<div align="center">
+
+`12/14` ⬜&nbsp;&nbsp;`12/15` ⬜&nbsp;&nbsp;`12/16` ⬜&nbsp;&nbsp;`12/17` ⬜&nbsp;&nbsp;`12/18` 💪🗣️🔬📚&nbsp;&nbsp;`12/19` 💪🗣️🔬📚&nbsp;&nbsp;`12/20` 💪🗣️🔬📚&nbsp;&nbsp;
+
+</div>
+
+## 📚 읽고 있는 책
+
+- **Quantum Computing: An Applied Approach** _(마지막: 2025-12-18)_
+
 ---
 
-## 📝 입력 방법
+<div align="center">
 
-### 1️⃣ 제목
+### 🎮 빠른 시작
+
+**[➕ 오늘 기록하기](../../issues/new/choose)**
+
+</div>
+
+<details>
+<summary><b>📝 입력 형식</b></summary>
+
+### 제목
 ```
 2025-12-20
 ```
 
-### 2️⃣ 본문
+### 본문
 ```
 💪 1.5h
 🗣️ 45m
@@ -35,32 +83,12 @@
 📚 Quantum Computing - Ch.3 양자 게이트
 ```
 
-### 📌 시간 입력 형식
+### 시간 입력 방법
 - `1h` 또는 `1시간` → 1시간
-- `30m` 또는 `30분` → 30분
-- `1.5h` → 1시간 30분
+- `30m` 또는 `30분` → 30분  
+- `1.5h` 또는 `1시간 30분` → 1시간 30분
 
----
-
-## 🎯 주간 목표
-
-| 카테고리 | 목표 | 설명 |
-|:---:|:---:|---|
-| 💪 헬스 | 주 3회 | 꾸준한 체력 관리 |
-| 🗣️ 영어 | 주 4회 | 영어 회화 능력 향상 |
-| 🔬 연구 | 주 5회 | 논문, 실험, 코딩, 작성 |
-
----
-
-## ⚡ 자동화 기능
-
-Issue를 제출하면 자동으로:
-
-- ✅ 주간/월간/연간 로그 생성
-- ✅ 통계 자동 계산
-- ✅ 대시보드 실시간 업데이트
-- ✅ 독서 기록 자동 분류
-- ✅ Issue 자동 닫기
+</details>
 
 ---
 
@@ -68,6 +96,6 @@ Issue를 제출하면 자동으로:
 
 **📈 Consistency is the key to momentum! 🚀**
 
-*첫 기록을 남기고 여정을 시작해보세요*
+[![Star this repo](https://img.shields.io/github/stars/haakusi/daily-momentum?style=social)](https://github.com/haakusi/daily-momentum)
 
 </div>

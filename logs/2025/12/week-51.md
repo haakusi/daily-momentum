@@ -16,6 +16,7 @@
 🔬 **연구**: 3h - VQE 회로 최적화 실험
 📚 **독서**: Quantum Computing: An Applied Approach - Ch.3 양자 게이트
 
+
 ## 2025-12-18 (Thursday)
 
 💪 **헬스**: 1h 30m
