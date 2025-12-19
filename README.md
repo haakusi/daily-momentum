@@ -8,7 +8,30 @@
 
 ---
 
-## 📊 이번 주 (Week 51)
+## 📅 Activity Heatmap
+
+<table><tr><td>
+
+```
+     Mon Tue Wed Thu Fri Sat Sun
+W-7  ⚫  ⚫  ⚫  ⚫  ⚫  ⚫  ⚫
+W-6  ⚫  ⚫  ⚫  ⚫  ⚫  ⚫  ⚫
+W-5  ⚫  ⚫  ⚫  ⚫  ⚫  ⚫  ⚫
+W-4  ⚫  ⚫  ⚫  ⚫  ⚫  ⚫  ⚫
+W-3  ⚫  ⚫  ⚫  ⚫  ⚫  ⚫  ⚫
+W-2  ⚫  ⚫  ⚫  ⚫  ⚫  ⚫  ⚫
+W-1  ⚫  ⚫  ⚫  ⚫  ⚫  ⚫  ⚫
+Now  ⚫  ⚫  ⚫  🟢  ⚫  ⚫  ⬜
+```
+
+</td></tr></table>
+
+<sub>⚫ No activity   🟢 Active</sub>
+
+
+---
+
+## 📊 1st Week
 
 <table>
 <tr>
@@ -17,14 +40,14 @@
 <td align="center"><b>🔬 연구</b></td>
 </tr>
 <tr>
-<td align="center">2/3회<br>3h</td>
-<td align="center">2/4회<br>1h 30m</td>
-<td align="center">2/5회<br>6h</td>
+<td align="center">1/3회<br>1h 30m</td>
+<td align="center">1/4회<br>0h 45m</td>
+<td align="center">1/5회<br>3h</td>
 </tr>
 <tr>
-<td align="center">🟩🟩🟩⬜⬜</td>
-<td align="center">🟩🟩⬜⬜⬜</td>
-<td align="center">🟩🟩⬜⬜⬜</td>
+<td align="center">🟩⬜⬜⬜⬜</td>
+<td align="center">🟩⬜⬜⬜⬜</td>
+<td align="center">🟩⬜⬜⬜⬜</td>
 </tr>
 </table>
 
@@ -32,8 +55,8 @@
 
 | 💪 헬스 | 🗣️ 영어 | 🔬 연구 |
 |:---:|:---:|:---:|
-| 3h | 1h 30m | 6h |
-| 2일 | 2일 | 2일 |
+| 1h 30m | 0h 45m | 3h |
+| 1일 | 1일 | 1일 |
 
 ## 🏆 2025년 통계
 
@@ -41,7 +64,7 @@
 
 | 총 활동 일수 | 헬스 | 영어 | 연구 |
 |:---:|:---:|:---:|:---:|
-| **2일** | 3h | 1h 30m | 6h |
+| **1일** | 1h 30m | 0h 45m | 3h |
 
 </div>
 
@@ -49,13 +72,13 @@
 
 <div align="center">
 
-`12/14` ⬜&nbsp;&nbsp;`12/15` ⬜&nbsp;&nbsp;`12/16` ⬜&nbsp;&nbsp;`12/17` ⬜&nbsp;&nbsp;`12/18` 💪🗣️🔬📚&nbsp;&nbsp;`12/19` 💪🗣️🔬📚&nbsp;&nbsp;`12/20` ⬜&nbsp;&nbsp;
+`12/14` ⬜&nbsp;&nbsp;`12/15` ⬜&nbsp;&nbsp;`12/16` ⬜&nbsp;&nbsp;`12/17` ⬜&nbsp;&nbsp;`12/18` 💪🗣️🔬📚&nbsp;&nbsp;`12/19` ⬜&nbsp;&nbsp;`12/20` ⬜&nbsp;&nbsp;
 
 </div>
 
 ## 📚 읽고 있는 책
 
-- **Quantum Computing: An Applied Approach** _(마지막: 2025-12-19)_
+- **Quantum Computing: An Applied Approach** _(마지막: 2025-12-18)_
 
 ---
 
