@@ -1,0 +1,47 @@
+{
+  "daily": {
+    "2025-12-20": {
+      "fitness": 90,
+      "english": 45,
+      "research": 180,
+      "reading": "Quantum Computing: An Applied Approach"
+    }
+  },
+  "weekly": {
+    "2025-W51": {
+      "fitness": 90,
+      "english": 45,
+      "research": 180,
+      "days": 0
+    }
+  },
+  "monthly": {
+    "2025-12": {
+      "fitness": 90,
+      "english": 45,
+      "research": 180,
+      "days": 1
+    }
+  },
+  "yearly": {
+    "2025": {
+      "fitness": 90,
+      "english": 45,
+      "research": 180,
+      "days": 1
+    }
+  },
+  "books": [
+    {
+      "title": "Quantum Computing: An Applied Approach",
+      "first_read": "2025-12-20",
+      "last_read": "2025-12-20",
+      "notes": [
+        {
+          "date": "2025-12-20",
+          "note": "Ch.3 양자 게이트"
+        }
+      ]
+    }
+  ]
+}
