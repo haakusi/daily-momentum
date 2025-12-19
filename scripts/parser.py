@@ -280,16 +280,51 @@ def update_book_log(data):
     with open(book_file, 'w', encoding='utf-8') as f:
         f.write(content)
 
+def parse_date_from_title(title):
+    """Issue 제목에서 날짜 추출"""
+    if not title:
+        return None
+    
+    # 다양한 날짜 형식 지원
+    patterns = [
+        r'(\d{4})[-./ ](\d{1,2})[-./ ](\d{1,2})',  # 2024-12-19, 2024.12.19, 2024/12/19
+        r'(\d{1,2})[-./ ](\d{1,2})',  # 12-19, 12.19, 12/19
+    ]
+    
+    for pattern in patterns:
+        match = re.search(pattern, title)
+        if match:
+            groups = match.groups()
+            if len(groups) == 3:
+                year, month, day = int(groups[0]), int(groups[1]), int(groups[2])
+            else:
+                # 현재 년도 사용
+                year = datetime.now(KST).year
+                month, day = int(groups[0]), int(groups[1])
+            
+            try:
+                return KST.localize(datetime(year, month, day))
+            except ValueError:
+                continue
+    
+    return None
+
 def main():
     # 환경 변수에서 Issue 내용 가져오기
     issue_body = os.environ.get('ISSUE_BODY', '')
+    issue_title = os.environ.get('ISSUE_TITLE', '')
     
     if not issue_body:
         print("No issue body found")
         return
     
-    # 현재 시간 (한국 시간)
-    now = datetime.now(KST)
+    # 제목에서 날짜 파싱 시도, 없으면 현재 시간 사용
+    now = parse_date_from_title(issue_title)
+    if now is None:
+        now = datetime.now(KST)
+        print(f"Using current date: {now.strftime('%Y-%m-%d')}")
+    else:
+        print(f"Using date from title: {now.strftime('%Y-%m-%d')}")
     
     # Issue 파싱
     data = parse_issue_body(issue_body)
