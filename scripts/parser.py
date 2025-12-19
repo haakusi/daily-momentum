@@ -109,7 +109,7 @@ def format_time(minutes):
     return f"{hours}h {mins}m"
 
 def update_weekly_log(date, data):
-    """주간 로그 업데이트"""
+    """주간 로그 업데이트 - 입력한 항목만 표시"""
     year = date.year
     month = date.month
     week = get_week_number(date)
@@ -121,47 +121,82 @@ def update_weekly_log(date, data):
     date_str = date.strftime('%Y-%m-%d')
     day_name = date.strftime('%A')
     
-    # 기존 파일 읽기
+    # 기존 파일 읽기 또는 새로 생성
     if os.path.exists(week_file):
         with open(week_file, 'r', encoding='utf-8') as f:
             content = f.read()
     else:
         content = f"# Week {week} - {year}.{month:02d}\n\n"
     
-    # 오늘 날짜 섹션 추가/업데이트
-    day_section = f"\n## {date_str} ({day_name})\n\n"
+    # 새로운 날짜 섹션 생성 - 입력한 것만!
+    day_section = f"## {date_str} ({day_name})\n\n"
+    has_content = False
     
+    # 💪 헬스 - 입력한 경우만 표시
     if data['fitness']['time'] > 0:
         day_section += f"💪 **헬스**: {format_time(data['fitness']['time'])}"
         if data['fitness']['note']:
             day_section += f" - {data['fitness']['note']}"
         day_section += "\n"
+        has_content = True
     
+    # 🗣️ 영어 - 입력한 경우만 표시
     if data['english']['time'] > 0:
         day_section += f"🗣️ **영어**: {format_time(data['english']['time'])}"
         if data['english']['note']:
             day_section += f" - {data['english']['note']}"
         day_section += "\n"
+        has_content = True
     
+    # 🔬 연구 - 입력한 경우만 표시
     if data['research']['time'] > 0:
         day_section += f"🔬 **연구**: {format_time(data['research']['time'])}"
         if data['research']['note']:
             day_section += f" - {data['research']['note']}"
         day_section += "\n"
+        has_content = True
     
-    if data['reading']['title']:
+    # 📚 독서 - 입력한 경우만 표시
+    if data['reading']['title'] and data['reading']['title'].strip():
         day_section += f"📚 **독서**: {data['reading']['title']}"
         if data['reading']['note']:
             day_section += f" - {data['reading']['note']}"
         day_section += "\n"
+        has_content = True
     
-    # 기존 날짜 섹션 제거하고 새로 추가
-    pattern = f"## {date_str}.*?(?=\n## |\Z)"
+    # 아무것도 입력 안 했으면 기록 안 함
+    if not has_content:
+        print(f"⚠️ No activity recorded for {date_str}")
+        return
+    
+    day_section += "\n"
+    
+    # 기존 파일에서 해당 날짜 섹션 찾아서 제거
+    pattern = f"## {date_str}[^\n]*\n.*?(?=\n## |\Z)"
     content = re.sub(pattern, '', content, flags=re.DOTALL)
-    content += day_section
+    
+    # 날짜순 정렬을 위해 모든 섹션 파싱
+    sections = {}
+    header = content.split('\n## ')[0]  # "# Week XX - YYYY.MM" 부분
+    
+    # 기존 섹션들 추출
+    section_pattern = r'## (\d{4}-\d{2}-\d{2})[^\n]*\n(.*?)(?=\n## |\Z)'
+    for match in re.finditer(section_pattern, content, re.DOTALL):
+        section_date = match.group(1)
+        section_content = match.group(2).strip()
+        sections[section_date] = f"## {match.group(0).split('\n', 1)[0]}\n\n{section_content}\n\n"
+    
+    # 새 섹션 추가
+    sections[date_str] = day_section
+    
+    # 날짜순 정렬해서 재구성
+    sorted_sections = sorted(sections.items())
+    new_content = header + "\n"
+    for _, section in sorted_sections:
+        new_content += section
     
     with open(week_file, 'w', encoding='utf-8') as f:
-        f.write(content)
+        f.write(new_content)
 
 def update_stats(date, data):
     """통계 JSON 업데이트"""
@@ -220,8 +255,8 @@ def update_stats(date, data):
     stats['yearly'][year_str]['research'] = stats['yearly'][year_str]['research'] - old_data.get('research', 0) + data['research']['time']
     stats['yearly'][year_str]['days'] = len([d for d in stats['daily'] if d.startswith(year_str)])
     
-    # 독서 목록
-    if data['reading']['title']:
+    # 독서 목록 - 제목이 실제로 있을 때만
+    if data['reading']['title'] and data['reading']['title'].strip():
         book_exists = False
         for book in stats['books']:
             if book['title'] == data['reading']['title']:
