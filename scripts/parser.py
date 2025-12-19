@@ -172,15 +172,16 @@ def update_weekly_log(date, data):
     day_section += "\n"
     
     # 기존 파일에서 해당 날짜 섹션 찾아서 제거
-    pattern = f"## {date_str}[^\n]*\n.*?(?=\n## |\Z)"
-    content = re.sub(pattern, '', content, flags=re.DOTALL)
+    # f-string에서 백슬래시를 사용할 수 없으므로 변수로 분리
+    date_pattern = f"## {date_str}[^\\n]*\\n.*?(?=\\n## |\\Z)"
+    content = re.sub(date_pattern, '', content, flags=re.DOTALL)
     
     # 날짜순 정렬을 위해 모든 섹션 파싱
     sections = {}
     header = content.split('\n## ')[0]  # "# Week XX - YYYY.MM" 부분
     
     # 기존 섹션들 추출
-    section_pattern = r'## (\d{4}-\d{2}-\d{2})[^\n]*\n(.*?)(?=\n## |\Z)'
+    section_pattern = r'## (\d{4}-\d{2}-\d{2})[^\\n]*\\n(.*?)(?=\\n## |\\Z)'
     for match in re.finditer(section_pattern, content, re.DOTALL):
         section_date = match.group(1)
         section_content = match.group(2).strip()
