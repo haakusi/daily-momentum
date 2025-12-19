@@ -11,37 +11,43 @@
       "english": 45,
       "research": 180,
       "reading": "Quantum Computing: An Applied Approach"
+    },
+    "2025-12-19": {
+      "fitness": 90,
+      "english": 45,
+      "research": 180,
+      "reading": "Quantum Computing: An Applied Approach"
     }
   },
   "weekly": {
     "2025-W51": {
-      "fitness": 180,
-      "english": 90,
-      "research": 360,
+      "fitness": 270,
+      "english": 135,
+      "research": 540,
       "days": 0
     }
   },
   "monthly": {
     "2025-12": {
-      "fitness": 180,
-      "english": 90,
-      "research": 360,
-      "days": 2
+      "fitness": 270,
+      "english": 135,
+      "research": 540,
+      "days": 3
     }
   },
   "yearly": {
     "2025": {
-      "fitness": 180,
-      "english": 90,
-      "research": 360,
-      "days": 2
+      "fitness": 270,
+      "english": 135,
+      "research": 540,
+      "days": 3
     }
   },
   "books": [
     {
       "title": "Quantum Computing: An Applied Approach",
       "first_read": "2025-12-20",
-      "last_read": "2025-12-18",
+      "last_read": "2025-12-19",
       "notes": [
         {
           "date": "2025-12-20",
@@ -49,6 +55,10 @@
         },
         {
           "date": "2025-12-18",
+          "note": "Ch.3 양자 게이트"
+        },
+        {
+          "date": "2025-12-19",
           "note": "Ch.3 양자 게이트"
         }
       ]
