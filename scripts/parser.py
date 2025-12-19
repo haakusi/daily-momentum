@@ -185,7 +185,10 @@ def update_weekly_log(date, data):
     for match in re.finditer(section_pattern, content, re.DOTALL):
         section_date = match.group(1)
         section_content = match.group(2).strip()
-        sections[section_date] = f"## {match.group(0).split('\n', 1)[0]}\n\n{section_content}\n\n"
+        # f-string에서 백슬래시 사용 불가하므로 변수로 분리
+        full_match = match.group(0)
+        first_line = full_match.split('\n', 1)[0]
+        sections[section_date] = f"## {first_line}\n\n{section_content}\n\n"
     
     # 새 섹션 추가
     sections[date_str] = day_section
