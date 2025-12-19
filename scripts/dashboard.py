@@ -64,20 +64,61 @@ def generate_dashboard():
         'research': 5   # 5회
     }
     
-    # 이번 주 통계
-    week_stats = stats['weekly'].get(current_week, {'fitness': 0, 'english': 0, 'research': 0, 'days': 0})
-    week_fitness_count = sum(1 for d, v in stats['daily'].items() 
-                            if d.startswith(current_week.replace('W', '-W')) and v['fitness'] > 0)
-    week_english_count = sum(1 for d, v in stats['daily'].items() 
-                            if d.startswith(current_week.replace('W', '-W')) and v['english'] > 0)
-    week_research_count = sum(1 for d, v in stats['daily'].items() 
-                             if d.startswith(current_week.replace('W', '-W')) and v['research'] > 0)
+    # 이번 주 통계 계산
+    week_fitness_count = 0
+    week_english_count = 0
+    week_research_count = 0
+    week_fitness_time = 0
+    week_english_time = 0
+    week_research_time = 0
+    
+    for date_str, day_data in stats['daily'].items():
+        if date_str.startswith(f"{now.year}-"):
+            date = datetime.strptime(date_str, '%Y-%m-%d')
+            if get_week_number(date) == get_week_number(now):
+                if day_data.get('fitness', 0) > 0:
+                    week_fitness_count += 1
+                    week_fitness_time += day_data['fitness']
+                if day_data.get('english', 0) > 0:
+                    week_english_count += 1
+                    week_english_time += day_data['english']
+                if day_data.get('research', 0) > 0:
+                    week_research_count += 1
+                    week_research_time += day_data['research']
     
     # 이번 달 통계
-    month_stats = stats['monthly'].get(current_month, {'fitness': 0, 'english': 0, 'research': 0, 'days': 0})
+    month_fitness_time = 0
+    month_english_time = 0
+    month_research_time = 0
+    month_fitness_days = 0
+    month_english_days = 0
+    month_research_days = 0
+    
+    for date_str, day_data in stats['daily'].items():
+        if date_str.startswith(current_month):
+            if day_data.get('fitness', 0) > 0:
+                month_fitness_days += 1
+                month_fitness_time += day_data['fitness']
+            if day_data.get('english', 0) > 0:
+                month_english_days += 1
+                month_english_time += day_data['english']
+            if day_data.get('research', 0) > 0:
+                month_research_days += 1
+                month_research_time += day_data['research']
     
     # 연간 통계
-    year_stats = stats['yearly'].get(current_year, {'fitness': 0, 'english': 0, 'research': 0, 'days': 0})
+    year_fitness_time = 0
+    year_english_time = 0
+    year_research_time = 0
+    year_active_days = set()
+    
+    for date_str, day_data in stats['daily'].items():
+        if date_str.startswith(current_year):
+            year_fitness_time += day_data.get('fitness', 0)
+            year_english_time += day_data.get('english', 0)
+            year_research_time += day_data.get('research', 0)
+            if any([day_data.get('fitness', 0) > 0, day_data.get('english', 0) > 0, day_data.get('research', 0) > 0]):
+                year_active_days.add(date_str)
     
     # 최근 7일 활동
     recent_days = []
@@ -104,68 +145,96 @@ def generate_dashboard():
     
     # 독서 목록
     books = stats.get('books', [])
-    recent_books = sorted(books, key=lambda x: x['last_read'], reverse=True)[:5]
+    recent_books = sorted(books, key=lambda x: x['last_read'], reverse=True)[:3]
     
-    # README 생성
-    readme = f"""# 🎯 Daily Momentum
+    # README 생성 - 더 깔끔하고 심플하게
+    readme = f"""<div align="center">
 
-> 매일매일 조금씩, 꾸준히 나아가는 PhD 여정 🚀
+# 🎯 Daily Momentum
 
-## 📊 이번 주 현황 (Week {get_week_number(now)})
+**매일매일 조금씩, 꾸준히 나아가는 PhD 여정**
 
-| 카테고리 | 현황 | 목표 | 달성 |
-|---------|------|------|------|
-| 💪 헬스 | {week_fitness_count}회 ({format_time(week_stats['fitness'])}) | {weekly_targets['fitness']}회 | {get_emoji_bar(get_achievement_rate(week_fitness_count, weekly_targets['fitness']))} |
-| 🗣️ 영어 | {week_english_count}회 ({format_time(week_stats['english'])}) | {weekly_targets['english']}회 | {get_emoji_bar(get_achievement_rate(week_english_count, weekly_targets['english']))} |
-| 🔬 연구 | {week_research_count}회 ({format_time(week_stats['research'])}) | {weekly_targets['research']}회 | {get_emoji_bar(get_achievement_rate(week_research_count, weekly_targets['research']))} |
+</div>
 
-## 📈 이번 달 누적 ({now.month}월)
+---
 
-| 카테고리 | 총 시간 | 활동 일수 |
-|---------|---------|----------|
-| 💪 헬스 | {format_time(month_stats['fitness'])} | {sum(1 for d, v in stats['daily'].items() if d.startswith(current_month) and v['fitness'] > 0)}일 |
-| 🗣️ 영어 | {format_time(month_stats['english'])} | {sum(1 for d, v in stats['daily'].items() if d.startswith(current_month) and v['english'] > 0)}일 |
-| 🔬 연구 | {format_time(month_stats['research'])} | {sum(1 for d, v in stats['daily'].items() if d.startswith(current_month) and v['research'] > 0)}일 |
+## 📊 이번 주 (Week {get_week_number(now)})
 
-## 🏆 올해 통계 ({now.year}년)
+<table>
+<tr>
+<td align="center"><b>💪 헬스</b></td>
+<td align="center"><b>🗣️ 영어</b></td>
+<td align="center"><b>🔬 연구</b></td>
+</tr>
+<tr>
+<td align="center">{week_fitness_count}/{weekly_targets['fitness']}회<br>{format_time(week_fitness_time)}</td>
+<td align="center">{week_english_count}/{weekly_targets['english']}회<br>{format_time(week_english_time)}</td>
+<td align="center">{week_research_count}/{weekly_targets['research']}회<br>{format_time(week_research_time)}</td>
+</tr>
+<tr>
+<td align="center">{get_emoji_bar(get_achievement_rate(week_fitness_count, weekly_targets['fitness']))}</td>
+<td align="center">{get_emoji_bar(get_achievement_rate(week_english_count, weekly_targets['english']))}</td>
+<td align="center">{get_emoji_bar(get_achievement_rate(week_research_count, weekly_targets['research']))}</td>
+</tr>
+</table>
 
-- 💪 **총 헬스 시간**: {format_time(year_stats['fitness'])}
-- 🗣️ **총 영어 시간**: {format_time(year_stats['english'])}
-- 🔬 **총 연구 시간**: {format_time(year_stats['research'])}
-- 📚 **읽은 책**: {len(books)}권
-- 📅 **활동 일수**: {year_stats['days']}일
+## 📈 이번 달 ({now.month}월)
 
-## 📅 최근 7일 활동
+| 💪 헬스 | 🗣️ 영어 | 🔬 연구 |
+|:---:|:---:|:---:|
+| {format_time(month_fitness_time)} | {format_time(month_english_time)} | {format_time(month_research_time)} |
+| {month_fitness_days}일 | {month_english_days}일 | {month_research_days}일 |
 
-```
+## 🏆 {now.year}년 통계
+
+<div align="center">
+
+| 총 활동 일수 | 헬스 | 영어 | 연구 |
+|:---:|:---:|:---:|:---:|
+| **{len(year_active_days)}일** | {format_time(year_fitness_time)} | {format_time(year_english_time)} | {format_time(year_research_time)} |
+
+</div>
+
+## 📅 최근 7일
+
+<div align="center">
+
 """
     
     for day in recent_days:
-        readme += f"{day['date']} ({day['day']}): {day['activities']}\n"
+        readme += f"`{day['date']}` {day['activities']}&nbsp;&nbsp;"
     
-    readme += "```\n\n"
+    readme += "\n\n</div>\n\n"
     
     # 독서 목록
     if recent_books:
-        readme += "## 📚 최근 독서\n\n"
-        for i, book in enumerate(recent_books, 1):
-            readme += f"{i}. **{book['title']}**\n"
+        readme += "## 📚 읽고 있는 책\n\n"
+        for book in recent_books:
+            readme += f"- **{book['title']}**"
             if book.get('notes'):
-                last_note = book['notes'][-1]
-                readme += f"   - 최근: {last_note['note'][:50]}{'...' if len(last_note['note']) > 50 else ''}\n"
-            readme += f"   - 마지막 읽음: {book['last_read']}\n\n"
+                readme += f" _(마지막: {book['last_read']})_"
+            readme += "\n"
+        readme += "\n"
     
     readme += """---
 
-## 🎮 사용 방법
+<div align="center">
 
-### 1️⃣ 일일 기록하기
-1. [New Issue](../../issues/new/choose) 클릭
-2. "📝 Daily Log" 템플릿 선택
-3. 오늘의 활동 입력
-4. Submit!
+### 🎮 빠른 시작
 
-### 2️⃣ 입력 형식
+**[➕ 오늘 기록하기](../../issues/new/choose)**
+
+</div>
+
+<details>
+<summary><b>📝 입력 형식</b></summary>
+
+### 제목
+```
+2025-12-20
+```
+
+### 본문
 ```
 💪 1.5h
 🗣️ 45m
@@ -173,18 +242,20 @@ def generate_dashboard():
 📚 Quantum Computing - Ch.3 양자 게이트
 ```
 
-### 3️⃣ 자동으로 처리되는 것들
-- ✅ 주간/월간/연간 로그 자동 생성
-- ✅ 통계 자동 계산
-- ✅ 대시보드 자동 업데이트
-- ✅ 독서 기록 자동 정리
-- ✅ Issue 자동 닫기
+### 시간 입력 방법
+- `1h` 또는 `1시간` → 1시간
+- `30m` 또는 `30분` → 30분  
+- `1.5h` 또는 `1시간 30분` → 1시간 30분
+
+</details>
 
 ---
 
 <div align="center">
 
 **📈 Consistency is the key to momentum! 🚀**
+
+[![Star this repo](https://img.shields.io/github/stars/haakusi/daily-momentum?style=social)](https://github.com/haakusi/daily-momentum)
 
 </div>
 """
