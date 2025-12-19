@@ -41,6 +41,32 @@ def get_week_number(date):
     """ISO 주차 계산"""
     return date.isocalendar()[1]
 
+def get_habit_week_number(stats):
+    """습관 시작 후 몇 주차인지 계산"""
+    if not stats.get('daily'):
+        return 1
+    
+    # 첫 기록 날짜 찾기
+    first_date_str = min(stats['daily'].keys())
+    first_date = datetime.strptime(first_date_str, '%Y-%m-%d')
+    
+    # 현재 날짜
+    now = datetime.now(KST)
+    
+    # 주차 계산 (1부터 시작)
+    days_diff = (now - first_date).days
+    week_number = (days_diff // 7) + 1
+    
+    return week_number
+
+def ordinal_suffix(n):
+    """숫자를 서수로 변환 (1st, 2nd, 3rd, 4th...)"""
+    if 10 <= n % 100 <= 20:
+        suffix = 'th'
+    else:
+        suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')
+    return f"{n}{suffix}"
+
 def generate_dashboard():
     """README 대시보드 생성"""
     
@@ -147,6 +173,57 @@ def generate_dashboard():
     books = stats.get('books', [])
     recent_books = sorted(books, key=lambda x: x['last_read'], reverse=True)[:3]
     
+    # 습관 주차 계산
+    habit_week = get_habit_week_number(stats)
+    habit_week_text = ordinal_suffix(habit_week)
+    
+    # 최근 8주 활동 히트맵 생성 (깃허브 잔디 스타일)
+    heatmap_weeks = []
+    today = datetime.now(KST).date()
+    
+    # 8주 전부터 오늘까지
+    for week_offset in range(7, -1, -1):
+        week_days = []
+        for day_offset in range(7):
+            # 주의 시작일 계산 (월요일 기준)
+            target_date = today - timedelta(days=today.weekday()) - timedelta(weeks=week_offset) + timedelta(days=day_offset)
+            date_str = target_date.strftime('%Y-%m-%d')
+            
+            # 미래 날짜는 표시 안 함
+            if target_date > today:
+                week_days.append('⬜')
+                continue
+            
+            day_data = stats['daily'].get(date_str, {})
+            
+            # 활동 여부만 체크 (했다 / 안했다)
+            has_activity = (
+                day_data.get('fitness', 0) > 0 or
+                day_data.get('english', 0) > 0 or
+                day_data.get('research', 0) > 0
+            )
+            
+            # 심플하게 2가지만
+            if has_activity:
+                week_days.append('🟢')  # 활동함
+            else:
+                week_days.append('⚫')  # 활동 안 함
+        
+        heatmap_weeks.append(week_days)
+    
+    # 히트맵 HTML 생성 (미니멀하고 세련되게)
+    heatmap_html = '<table><tr><td>\n\n'
+    heatmap_html += '```\n'
+    heatmap_html += '     Mon Tue Wed Thu Fri Sat Sun\n'
+    
+    for i, week in enumerate(heatmap_weeks):
+        week_label = f"W-{7-i}" if i < 7 else "Now"
+        heatmap_html += f"{week_label:3s}  " + "  ".join(week) + "\n"
+    
+    heatmap_html += '```\n'
+    heatmap_html += '\n</td></tr></table>\n\n'
+    heatmap_html += '<sub>⚫ No activity   🟢 Active</sub>\n'
+    
     # README 생성 - 더 깔끔하고 심플하게
     readme = f"""<div align="center">
 
@@ -158,7 +235,13 @@ def generate_dashboard():
 
 ---
 
-## 📊 이번 주 (Week {get_week_number(now)})
+## 📅 Activity Heatmap
+
+{heatmap_html}
+
+---
+
+## 📊 {habit_week_text} Week
 
 <table>
 <tr>
