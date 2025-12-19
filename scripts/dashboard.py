@@ -50,6 +50,9 @@ def get_habit_week_number(stats):
     first_date_str = min(stats['daily'].keys())
     first_date = datetime.strptime(first_date_str, '%Y-%m-%d')
     
+    # 시간대 정보 추가
+    first_date = KST.localize(first_date)
+    
     # 현재 날짜
     now = datetime.now(KST)
     
