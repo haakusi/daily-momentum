@@ -6,6 +6,7 @@ import pytz
 
 KST = pytz.timezone('Asia/Seoul')
 
+
 def format_time(minutes):
     """분을 시간 형식으로 변환"""
     if minutes == 0:
@@ -16,11 +17,13 @@ def format_time(minutes):
         return f"{hours}h"
     return f"{hours}h {mins}m"
 
+
 def get_achievement_rate(actual, target):
     """달성률 계산"""
     if target == 0:
         return 0
     return int((actual / target) * 100)
+
 
 def get_emoji_bar(rate):
     """달성률을 이모지 바로 표현"""
@@ -37,30 +40,33 @@ def get_emoji_bar(rate):
     else:
         return "⬜⬜⬜⬜⬜"
 
+
 def get_week_number(date):
     """ISO 주차 계산"""
     return date.isocalendar()[1]
+
 
 def get_habit_week_number(stats):
     """습관 시작 후 몇 주차인지 계산"""
     if not stats.get('daily'):
         return 1
-    
+
     # 첫 기록 날짜 찾기
     first_date_str = min(stats['daily'].keys())
     first_date = datetime.strptime(first_date_str, '%Y-%m-%d')
-    
+
     # 시간대 정보 추가
     first_date = KST.localize(first_date)
-    
+
     # 현재 날짜
     now = datetime.now(KST)
-    
+
     # 주차 계산 (1부터 시작)
     days_diff = (now - first_date).days
     week_number = (days_diff // 7) + 1
-    
+
     return week_number
+
 
 def ordinal_suffix(n):
     """숫자를 서수로 변환 (1st, 2nd, 3rd, 4th...)"""
@@ -70,51 +76,30 @@ def ordinal_suffix(n):
         suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')
     return f"{n}{suffix}"
 
+
 def generate_dashboard():
     """README 대시보드 생성"""
-    
+
     # 통계 파일 읽기
     stats_file = "logs/stats.json"
     if not os.path.exists(stats_file):
         return generate_initial_readme()
-    
+
     with open(stats_file, 'r', encoding='utf-8') as f:
         stats = json.load(f)
-    
+
     now = datetime.now(KST)
     current_week = f"{now.year}-W{get_week_number(now):02d}"
     current_month = f"{now.year}-{now.month:02d}"
     current_year = str(now.year)
-    
+
     # 주간 목표
     weekly_targets = {
-        'fitness': 3,  # 3회
-        'english': 4,  # 4회
+        'fitness': 3,   # 3회
+        'english': 4,   # 4회
         'research': 5   # 5회
     }
-    
-    # 이번 주 통계 계산
-    week_fitness_count = 0
-    week_english_count = 0
-    week_research_count = 0
-    week_fitness_time = 0
-    week_english_time = 0
-    week_research_time = 0
-    
-    for date_str, day_data in stats['daily'].items():
-        if date_str.startswith(f"{now.year}-"):
-            date = datetime.strptime(date_str, '%Y-%m-%d')
-            if get_week_number(date) == get_week_number(now):
-                if day_data.get('fitness', 0) > 0:
-                    week_fitness_count += 1
-                    week_fitness_time += day_data['fitness']
-                if day_data.get('english', 0) > 0:
-                    week_english_count += 1
-                    week_english_time += day_data['english']
-                if day_data.get('research', 0) > 0:
-                    week_research_count += 1
-                    week_research_time += day_data['research']
-    
+
     # 이번 달 통계
     month_fitness_time = 0
     month_english_time = 0
@@ -122,7 +107,7 @@ def generate_dashboard():
     month_fitness_days = 0
     month_english_days = 0
     month_research_days = 0
-    
+
     for date_str, day_data in stats['daily'].items():
         if date_str.startswith(current_month):
             if day_data.get('fitness', 0) > 0:
@@ -134,28 +119,32 @@ def generate_dashboard():
             if day_data.get('research', 0) > 0:
                 month_research_days += 1
                 month_research_time += day_data['research']
-    
+
     # 연간 통계
     year_fitness_time = 0
     year_english_time = 0
     year_research_time = 0
     year_active_days = set()
-    
+
     for date_str, day_data in stats['daily'].items():
         if date_str.startswith(current_year):
             year_fitness_time += day_data.get('fitness', 0)
             year_english_time += day_data.get('english', 0)
             year_research_time += day_data.get('research', 0)
-            if any([day_data.get('fitness', 0) > 0, day_data.get('english', 0) > 0, day_data.get('research', 0) > 0]):
+            if any([
+                day_data.get('fitness', 0) > 0,
+                day_data.get('english', 0) > 0,
+                day_data.get('research', 0) > 0
+            ]):
                 year_active_days.add(date_str)
-    
+
     # 최근 7일 활동
     recent_days = []
     for i in range(6, -1, -1):
         date = now - timedelta(days=i)
         date_str = date.strftime('%Y-%m-%d')
         day_data = stats['daily'].get(date_str, {})
-        
+
         activities = []
         if day_data.get('fitness', 0) > 0:
             activities.append('💪')
@@ -165,29 +154,27 @@ def generate_dashboard():
             activities.append('🔬')
         if day_data.get('reading'):
             activities.append('📚')
-        
+
         recent_days.append({
             'date': date.strftime('%m/%d'),
             'day': date.strftime('%a'),
             'activities': ''.join(activities) if activities else '⬜'
         })
-    
+
     # 독서 목록
     books = stats.get('books', [])
     recent_books = sorted(books, key=lambda x: x['last_read'], reverse=True)[:3]
-    
+
     # 습관 주차 계산
     habit_week = get_habit_week_number(stats)
     habit_week_text = ordinal_suffix(habit_week)
-    
-    # 스트릭 계산
+
+    # 스트릭 계산 (연속 "활동한 날" 기준)
     current_streak = 0
     best_streak = 0
     temp_streak = 0
-    
-    # 날짜순 정렬
+
     sorted_dates = sorted(stats['daily'].keys())
-    
     for i, date_str in enumerate(sorted_dates):
         day_data = stats['daily'][date_str]
         has_activity = (
@@ -195,23 +182,26 @@ def generate_dashboard():
             day_data.get('english', 0) > 0 or
             day_data.get('research', 0) > 0
         )
-        
+
         if has_activity:
             temp_streak += 1
             best_streak = max(best_streak, temp_streak)
         else:
             temp_streak = 0
-        
-        # 마지막 날짜면 현재 스트릭 저장
+
         if i == len(sorted_dates) - 1 and has_activity:
             current_streak = temp_streak
-    
+
     # 총 활동 일수
-    total_active_days = sum(1 for day_data in stats['daily'].values() 
-                           if any([day_data.get('fitness', 0) > 0,
-                                  day_data.get('english', 0) > 0,
-                                  day_data.get('research', 0) > 0]))
-    
+    total_active_days = sum(
+        1 for day_data in stats['daily'].values()
+        if any([
+            day_data.get('fitness', 0) > 0,
+            day_data.get('english', 0) > 0,
+            day_data.get('research', 0) > 0
+        ])
+    )
+
     # 이번 주 통계 계산
     week_fitness_count = 0
     week_english_count = 0
@@ -219,8 +209,7 @@ def generate_dashboard():
     week_fitness_time = 0
     week_english_time = 0
     week_research_time = 0
-    week_total_time = 0
-    
+
     for date_str, day_data in stats['daily'].items():
         if date_str.startswith(f"{now.year}-"):
             date = datetime.strptime(date_str, '%Y-%m-%d')
@@ -234,64 +223,75 @@ def generate_dashboard():
                 if day_data.get('research', 0) > 0:
                     week_research_count += 1
                     week_research_time += day_data['research']
-    
+
     week_total_time = week_fitness_time + week_english_time + week_research_time
-    
-    # 주간 목표
-    weekly_targets = {
-        'fitness': 3,
-        'english': 4,
-        'research': 5
-    }
-    
+
     # 달성률 계산
     fitness_rate = get_achievement_rate(week_fitness_count, weekly_targets['fitness'])
     english_rate = get_achievement_rate(week_english_count, weekly_targets['english'])
     research_rate = get_achievement_rate(week_research_count, weekly_targets['research'])
-    
+
     # 진행바 생성 (5칸)
     def make_progress_bar(count, target):
-        filled = min(5, int((count / target) * 5))
+        filled = min(5, int((count / target) * 5)) if target else 0
         return '▰' * filled + '░' * (5 - filled)
-    
+
     fitness_bar = make_progress_bar(week_fitness_count, weekly_targets['fitness'])
     english_bar = make_progress_bar(week_english_count, weekly_targets['english'])
     research_bar = make_progress_bar(week_research_count, weekly_targets['research'])
-    
-    # 스트릭 & 달성률 카드 생성 (실제 렌더링 기준 정렬)
-    
-    # 고정 박스 너비
-    box_width = 68  # 약간 줄임
-    
-    # 스트릭 라인 - 수동으로 공백 조정
-    streak_line = f"│  🔥 Streak: {current_streak:>4} days     🏆 Best: {best_streak:>4} days     📅 Total: {total_active_days:>4} days  │"
-    
-    # 주간 제목
-    week_line = f"│  This Week: {habit_week_text} Week" + " " * (box_width - 20 - len(habit_week_text)) + "│"
-    
-    # 각 활동 라인
+
+    # =========================
+    # Progress Dashboard 카드 생성 (오른쪽 세로선 제거 + 가로폭 확대)
+    # =========================
+    box_width = 100  # 원하면 110/120으로 늘려도 됨 (README에서 더 길게 보임)
+
+    top_border = "┌" + ("─" * (box_width - 2)) + "┐"
+    bottom_border = "└" + ("─" * (box_width - 2)) + "┘"
+
+    def pad_line(prefix: str, content: str) -> str:
+        """
+        왼쪽 '│'는 유지하고, 오른쪽 끝 '│'는 없앤 형태로 폭을 맞춰줌.
+        GitHub에서 이모지/가변폭 문자 때문에 오른쪽 테두리가 깨지는 현상 방지.
+        """
+        raw = prefix + content
+        if len(raw) >= box_width:
+            return raw[:box_width]
+        return raw + (" " * (box_width - len(raw)))
+
+    # Streak 라인 (오른쪽 세로선 없음)
+    streak_content = (
+        f"🔥 Streak: {current_streak:>4} days     "
+        f"🏆 Best: {best_streak:>4} days     "
+        f"📅 Total: {total_active_days:>4} days"
+    )
+    streak_line = pad_line("│  ", streak_content)
+
+    # Week 제목 라인 (오른쪽 세로선 없음)
+    week_title = f"This Week: {habit_week_text} Week"
+    week_line = pad_line("│  ", week_title)
+
+    # 가로 구분선 (오른쪽 세로선 없음)
+    separator = "│  " + ("━" * (box_width - len("│  ")))
+
     def format_activity_line(emoji, name, count, target, bar, rate):
         rate_str = f"{rate:>3}%"
         star = " ⭐" if rate >= 100 else "   "
-        # 고정 포맷
-        return f"│  {emoji} {name:10s}  {count:>2}/{target}  {bar}  {rate_str}{star}" + " " * 16 + "│"
-    
+        text = f"{emoji} {name:12s}  {count:>2}/{target}  {bar}  {rate_str}{star}"
+        return pad_line("│  ", text)
+
     fitness_line = format_activity_line("💪", "Fitness", week_fitness_count, weekly_targets['fitness'], fitness_bar, fitness_rate)
     english_line = format_activity_line("🗣️", "English", week_english_count, weekly_targets['english'], english_bar, english_rate)
     research_line = format_activity_line("🔬", "Research", week_research_count, weekly_targets['research'], research_bar, research_rate)
-    
-    # 총 시간
-    total_line = f"│  Total: {format_time(week_total_time)} active this week" + " " * (box_width - 32 - len(format_time(week_total_time))) + "│"
-    
-    # 구분선
-    separator = "│  " + "━" * (box_width - 6) + "  │"
-    
-    achievement_card = f"""```
-┌{'─' * (box_width - 2)}┐
-{streak_line}
-└{'─' * (box_width - 2)}┘
 
-┌{'─' * (box_width - 2)}┐
+    total_text = f"Total: {format_time(week_total_time)} active this week"
+    total_line = pad_line("│  ", total_text)
+
+    achievement_card = f"""```
+{top_border}
+{streak_line}
+{bottom_border}
+
+{top_border}
 {week_line}
 {separator}
 {fitness_line}
@@ -299,9 +299,8 @@ def generate_dashboard():
 {research_line}
 {separator}
 {total_line}
-└{'─' * (box_width - 2)}┘
-```
-"""
+{bottom_border}
+
     
     # README 생성
     readme = f"""<div align="center">
