@@ -300,6 +300,7 @@ def generate_dashboard():
 {separator}
 {total_line}
 {bottom_border}
+"""
     
     # README 생성
     readme = f"""<div align="center">
