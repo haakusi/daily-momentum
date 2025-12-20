@@ -180,54 +180,103 @@ def generate_dashboard():
     habit_week = get_habit_week_number(stats)
     habit_week_text = ordinal_suffix(habit_week)
     
-    # 최근 8주 활동 히트맵 생성 (깃허브 잔디 스타일)
-    heatmap_weeks = []
-    today = datetime.now(KST).date()
+    # 스트릭 계산
+    current_streak = 0
+    best_streak = 0
+    temp_streak = 0
     
-    # 8주 전부터 오늘까지
-    for week_offset in range(7, -1, -1):
-        week_days = []
-        for day_offset in range(7):
-            # 주의 시작일 계산 (월요일 기준)
-            target_date = today - timedelta(days=today.weekday()) - timedelta(weeks=week_offset) + timedelta(days=day_offset)
-            date_str = target_date.strftime('%Y-%m-%d')
-            
-            # 미래 날짜는 표시 안 함
-            if target_date > today:
-                week_days.append('⬜')
-                continue
-            
-            day_data = stats['daily'].get(date_str, {})
-            
-            # 활동 여부만 체크 (했다 / 안했다)
-            has_activity = (
-                day_data.get('fitness', 0) > 0 or
-                day_data.get('english', 0) > 0 or
-                day_data.get('research', 0) > 0
-            )
-            
-            # 심플하게 2가지만
-            if has_activity:
-                week_days.append('🟢')  # 활동함
-            else:
-                week_days.append('⚫')  # 활동 안 함
+    # 날짜순 정렬
+    sorted_dates = sorted(stats['daily'].keys())
+    
+    for i, date_str in enumerate(sorted_dates):
+        day_data = stats['daily'][date_str]
+        has_activity = (
+            day_data.get('fitness', 0) > 0 or
+            day_data.get('english', 0) > 0 or
+            day_data.get('research', 0) > 0
+        )
         
-        heatmap_weeks.append(week_days)
+        if has_activity:
+            temp_streak += 1
+            best_streak = max(best_streak, temp_streak)
+        else:
+            temp_streak = 0
+        
+        # 마지막 날짜면 현재 스트릭 저장
+        if i == len(sorted_dates) - 1 and has_activity:
+            current_streak = temp_streak
     
-    # 히트맵 HTML 생성 (미니멀하고 세련되게)
-    heatmap_html = '<table><tr><td>\n\n'
-    heatmap_html += '```\n'
-    heatmap_html += '     Mon Tue Wed Thu Fri Sat Sun\n'
+    # 총 활동 일수
+    total_active_days = sum(1 for day_data in stats['daily'].values() 
+                           if any([day_data.get('fitness', 0) > 0,
+                                  day_data.get('english', 0) > 0,
+                                  day_data.get('research', 0) > 0]))
     
-    for i, week in enumerate(heatmap_weeks):
-        week_label = f"W-{7-i}" if i < 7 else "Now"
-        heatmap_html += f"{week_label:3s}  " + "  ".join(week) + "\n"
+    # 이번 주 통계 계산
+    week_fitness_count = 0
+    week_english_count = 0
+    week_research_count = 0
+    week_fitness_time = 0
+    week_english_time = 0
+    week_research_time = 0
+    week_total_time = 0
     
-    heatmap_html += '```\n'
-    heatmap_html += '\n</td></tr></table>\n\n'
-    heatmap_html += '<sub>⚫ No activity   🟢 Active</sub>\n'
+    for date_str, day_data in stats['daily'].items():
+        if date_str.startswith(f"{now.year}-"):
+            date = datetime.strptime(date_str, '%Y-%m-%d')
+            if get_week_number(date) == get_week_number(now):
+                if day_data.get('fitness', 0) > 0:
+                    week_fitness_count += 1
+                    week_fitness_time += day_data['fitness']
+                if day_data.get('english', 0) > 0:
+                    week_english_count += 1
+                    week_english_time += day_data['english']
+                if day_data.get('research', 0) > 0:
+                    week_research_count += 1
+                    week_research_time += day_data['research']
     
-    # README 생성 - 더 깔끔하고 심플하게
+    week_total_time = week_fitness_time + week_english_time + week_research_time
+    
+    # 주간 목표
+    weekly_targets = {
+        'fitness': 3,
+        'english': 4,
+        'research': 5
+    }
+    
+    # 달성률 계산
+    fitness_rate = get_achievement_rate(week_fitness_count, weekly_targets['fitness'])
+    english_rate = get_achievement_rate(week_english_count, weekly_targets['english'])
+    research_rate = get_achievement_rate(week_research_count, weekly_targets['research'])
+    
+    # 진행바 생성 (5칸)
+    def make_progress_bar(count, target):
+        filled = min(5, int((count / target) * 5))
+        return '▰' * filled + '░' * (5 - filled)
+    
+    fitness_bar = make_progress_bar(week_fitness_count, weekly_targets['fitness'])
+    english_bar = make_progress_bar(week_english_count, weekly_targets['english'])
+    research_bar = make_progress_bar(week_research_count, weekly_targets['research'])
+    
+    # 스트릭 & 달성률 카드 생성
+    achievement_card = f"""```
+┌─────────────────────────────────────────────────────────┐
+│  🔥 Streak: {current_streak} days    🏆 Best: {best_streak} days    📅 Total: {total_active_days} days  │
+└─────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────┐
+│  This Week: {habit_week_text} Week                                │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
+│  💪 Fitness    {week_fitness_count}/{weekly_targets['fitness']}  {fitness_bar}  {fitness_rate}%{'  ⭐' if fitness_rate >= 100 else ''}          │
+│  🗣️ English    {week_english_count}/{weekly_targets['english']}  {english_bar}  {english_rate}%{'  ⭐' if english_rate >= 100 else ''}          │
+│  🔬 Research   {week_research_count}/{weekly_targets['research']}  {research_bar}  {research_rate}%{'  ⭐' if research_rate >= 100 else ''}          │
+│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
+│  Total: {format_time(week_total_time)} active this week                      │
+└─────────────────────────────────────────────────────────┘
+```
+"""
+    
+    # README 생성
     readme = f"""<div align="center">
 
 # 🎯 Daily Momentum
@@ -238,31 +287,11 @@ def generate_dashboard():
 
 ---
 
-## 📅 Activity Heatmap
+## 📊 Progress Dashboard
 
-{heatmap_html}
+{achievement_card}
 
 ---
-
-## 📊 {habit_week_text} Week
-
-<table>
-<tr>
-<td align="center"><b>💪 헬스</b></td>
-<td align="center"><b>🗣️ 영어</b></td>
-<td align="center"><b>🔬 연구</b></td>
-</tr>
-<tr>
-<td align="center">{week_fitness_count}/{weekly_targets['fitness']}회<br>{format_time(week_fitness_time)}</td>
-<td align="center">{week_english_count}/{weekly_targets['english']}회<br>{format_time(week_english_time)}</td>
-<td align="center">{week_research_count}/{weekly_targets['research']}회<br>{format_time(week_research_time)}</td>
-</tr>
-<tr>
-<td align="center">{get_emoji_bar(get_achievement_rate(week_fitness_count, weekly_targets['fitness']))}</td>
-<td align="center">{get_emoji_bar(get_achievement_rate(week_english_count, weekly_targets['english']))}</td>
-<td align="center">{get_emoji_bar(get_achievement_rate(week_research_count, weekly_targets['research']))}</td>
-</tr>
-</table>
 
 ## 📈 이번 달 ({now.month}월)
 
@@ -294,7 +323,7 @@ def generate_dashboard():
     
     # 독서 목록
     if recent_books:
-        readme += "## 📚 읽고 있는 책\n\n"
+        readme += "## 📚 읽고 있는 페이퍼/책\n\n"
         for book in recent_books:
             readme += f"- **{book['title']}**"
             if book.get('notes'):
