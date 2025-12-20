@@ -2,7 +2,7 @@
 
 # 🎯 Daily Momentum
 
-**매일매일 조금씩, 꾸준히 나아가는 습관 만들기**
+**Build momentum through small, consistent progress — every single day.**
 
 </div>
 
@@ -12,39 +12,68 @@
 
 <div align="center">
 
-🔥 **Streak**: **3 days**  •  🏆 **Best**: **3 days**  •  📅 **Total Active**: **3 days**
+🔥 **Streak:** **3 days** &nbsp; • &nbsp;
+🏆 **Best:** **3 days** &nbsp; • &nbsp;
+📅 **Total Active:** **3 days**
 
 </div>
 
+<br/>
+
+---
+
+<br/>
+
 ### 📅 This Week · 1st Week
 
-| Habit | Progress | Goal | Status |
+*Focus on consistency. Progress resets every Monday.*
+
+| Habit | Progress | Goal | Completion |
 |---|---:|---:|---:|
-| 💪 Fitness | ▰░░░░ | 1 / 3 | 33% |
-| 🗣️ English | ▰▰░░░ | 2 / 4 | 50% |
+| 💪 Fitness | ▰▰▰░░ | 2 / 3 | 66% |
+| 🗣️ English | ▰░░░░ | 1 / 4 | 25% |
 | 🔬 Research | ░░░░░ | 0 / 5 | 0% |
 
-**⏱ Total:** **2h 24m** active this week
+**⏱ Total time:** **2h 24m** this week
 
+<br/>
 
-### 📈 This Month (12월)
+---
+
+<br/>
+
+### 📈 This Month · December
+
+*Accumulated effort over the current month.*
 
 | 💪 Fitness | 🗣️ English | 🔬 Research |
 |:--:|:--:|:--:|
-| **1h 24m** | **1h** | **0h** |
-| 1 day(s) | 2 day(s) | 0 day(s) |
+| **1h 54m** | **0h 30m** | **0h** |
+| 2 day(s) | 1 day(s) | 0 day(s) |
 
+<br/>
+
+---
+
+<br/>
 
 ### 🏆 2025 Overview
+
+*High-level snapshot of the year so far.*
 
 <div align="center">
 
 | Active Days | 💪 Fitness | 🗣️ English | 🔬 Research |
 |---:|---:|---:|---:|
-| **3** | 1h 24m | 1h | **0h** |
+| **3** | 1h 54m | 0h 30m | **0h** |
 
 </div>
 
+<br/>
+
+---
+
+<br/>
 
 ### 📆 Last 7 Days
 
@@ -54,20 +83,24 @@
 `12/17`  ⬜
 `12/18`  🗣️
 `12/19`  💪
-`12/20`  🗣️
+`12/20`  💪
+
+<br/>
 
 ---
 
+<br/>
+
 <div align="center">
 
-### 🎮 빠른 시작
+### 🎮 Quick Start
 
-**[➕ 오늘 기록하기](../../issues/new/choose)**
+**[➕ Log today](../../issues/new/choose)**
 
 </div>
 
 <details>
-<summary><b>📝 입력 형식</b></summary>
+<summary><b>📝 Input Format</b></summary>
 
 ### 제목
 ```
