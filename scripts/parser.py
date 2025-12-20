@@ -91,7 +91,10 @@ def parse_issue_body(body):
         # 📚 독서
         elif '📚' in line:
             parts = line.split('📚', 1)[1].strip()
-            if not parts:  # 비어있으면 스킵
+            if not parts or parts in ['.', '-', '_', '~']:  # 빈 값이나 특수문자만 있으면 스킵
+                continue
+            # 공백만 있거나 너무 짧으면 스킵
+            if len(parts.strip()) < 2:
                 continue
             if '-' in parts:
                 result['reading']['title'] = parts.split('-')[0].strip()
