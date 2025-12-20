@@ -1,0 +1,42 @@
+{
+  "daily": {
+    "2025-12-18": {
+      "fitness": 0,
+      "english": 30,
+      "research": 0,
+      "reading": "."
+    }
+  },
+  "weekly": {
+    "2025-W51": {
+      "fitness": 0,
+      "english": 30,
+      "research": 0,
+      "days": 0
+    }
+  },
+  "monthly": {
+    "2025-12": {
+      "fitness": 0,
+      "english": 30,
+      "research": 0,
+      "days": 0
+    }
+  },
+  "yearly": {
+    "2025": {
+      "fitness": 0,
+      "english": 30,
+      "research": 0,
+      "days": 1
+    }
+  },
+  "books": [
+    {
+      "title": ".",
+      "first_read": "2025-12-18",
+      "last_read": "2025-12-18",
+      "notes": []
+    }
+  ]
+}
