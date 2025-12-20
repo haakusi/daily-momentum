@@ -323,7 +323,7 @@ def generate_dashboard() -> str:
 
 # 🎯 Daily Momentum
 
-**매일매일 조금씩, 꾸준히 나아가는 습관 만들기**
+**Build momentum through small, consistent progress — every single day.**
 
 </div>
 
@@ -333,32 +333,89 @@ def generate_dashboard() -> str:
 
 <div align="center">
 
-{hero_line}
+🔥 **Streak:** **{streak['current']} days** &nbsp; • &nbsp;
+🏆 **Best:** **{streak['best']} days** &nbsp; • &nbsp;
+📅 **Total Active:** **{len(year_stats['active_days'])} days**
 
 </div>
 
-{week_table}
+<br/>
 
-{month_section}
+---
 
-{year_section}
+<br/>
+
+### 📅 This Week · {habit_week_text} Week
+
+*Focus on consistency. Progress resets every Monday.*
+
+| Habit | Progress | Goal | Completion |
+|---|---:|---:|---:|
+| 💪 Fitness | {progress_bar(wc["fitness"], weekly_targets["fitness"])} | {wc["fitness"]} / {weekly_targets["fitness"]} | {fitness_rate}% |
+| 🗣️ English | {progress_bar(wc["english"], weekly_targets["english"])} | {wc["english"]} / {weekly_targets["english"]} | {english_rate}% |
+| 🔬 Research | {progress_bar(wc["research"], weekly_targets["research"])} | {wc["research"]} / {weekly_targets["research"]} | {research_rate}% |
+
+**⏱ Total time:** **{format_time(total_week_time)}** this week
+
+<br/>
+
+---
+
+<br/>
+
+### 📈 This Month · {now.strftime('%B')}
+
+*Accumulated effort over the current month.*
+
+| 💪 Fitness | 🗣️ English | 🔬 Research |
+|:--:|:--:|:--:|
+| **{format_time(month_t["fitness"])}** | **{format_time(month_t["english"])}** | **{format_time(month_t["research"])}** |
+| {month_d["fitness"]} day(s) | {month_d["english"]} day(s) | {month_d["research"]} day(s) |
+
+<br/>
+
+---
+
+<br/>
+
+### 🏆 {now.year} Overview
+
+*High-level snapshot of the year so far.*
+
+<div align="center">
+
+| Active Days | 💪 Fitness | 🗣️ English | 🔬 Research |
+|---:|---:|---:|---:|
+| **{len(year_stats["active_days"])}** | {format_time(year_t["fitness"])} | {format_time(year_t["english"])} | **{format_time(year_t["research"])}** |
+
+</div>
+
+<br/>
+
+---
+
+<br/>
 
 ### 📆 Last 7 Days
 
 {last7_block}
 
-{books_section}---
+<br/>
+
+---
+
+<br/>
 
 <div align="center">
 
-### 🎮 빠른 시작
+### 🎮 Quick Start
 
-**[➕ 오늘 기록하기](../../issues/new/choose)**
+**[➕ Log today](../../issues/new/choose)**
 
 </div>
 
 <details>
-<summary><b>📝 입력 형식</b></summary>
+<summary><b>📝 Input Format</b></summary>
 
 ### 제목
 ```
