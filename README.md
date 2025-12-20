@@ -78,7 +78,7 @@ Now  ⚫  ⚫  ⚫  🟢  ⚫  ⚫  ⬜
 
 ## 📚 읽고 있는 책
 
-- **Quantum Computing: An Applied Approach** _(마지막: 2025-12-18)_
+- **Quantum Computing** _(마지막: 2025-12-18)_
 
 ---
 
