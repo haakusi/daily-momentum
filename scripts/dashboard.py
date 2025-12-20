@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 import os
 import json
 from datetime import datetime, timedelta
@@ -89,7 +91,6 @@ def generate_dashboard():
         stats = json.load(f)
 
     now = datetime.now(KST)
-    current_week = f"{now.year}-W{get_week_number(now):02d}"
     current_month = f"{now.year}-{now.month:02d}"
     current_year = str(now.year)
 
@@ -241,24 +242,25 @@ def generate_dashboard():
     research_bar = make_progress_bar(week_research_count, weekly_targets['research'])
 
     # =========================
-    # Progress Dashboard 카드 생성 (오른쪽 세로선 제거 + 가로폭 확대)
+    # Progress Dashboard 카드 생성
+    # - 오른쪽 세로선 제거(깨짐 방지)
+    # - 가로폭 확대
     # =========================
-    box_width = 100  # 원하면 110/120으로 늘려도 됨 (README에서 더 길게 보임)
+    box_width = 100  # 더 길게: 110/120 가능
 
     top_border = "┌" + ("─" * (box_width - 2)) + "┐"
     bottom_border = "└" + ("─" * (box_width - 2)) + "┘"
 
     def pad_line(prefix: str, content: str) -> str:
         """
-        왼쪽 '│'는 유지하고, 오른쪽 끝 '│'는 없앤 형태로 폭을 맞춰줌.
-        GitHub에서 이모지/가변폭 문자 때문에 오른쪽 테두리가 깨지는 현상 방지.
+        왼쪽 '│'는 유지하고, 오른쪽 끝 '│'는 없앤 형태로 폭을 맞춤.
+        GitHub에서 이모지/가변폭 문자로 인해 오른쪽 테두리 깨지는 현상 방지.
         """
         raw = prefix + content
         if len(raw) >= box_width:
             return raw[:box_width]
         return raw + (" " * (box_width - len(raw)))
 
-    # Streak 라인 (오른쪽 세로선 없음)
     streak_content = (
         f"🔥 Streak: {current_streak:>4} days     "
         f"🏆 Best: {best_streak:>4} days     "
@@ -266,12 +268,10 @@ def generate_dashboard():
     )
     streak_line = pad_line("│  ", streak_content)
 
-    # Week 제목 라인 (오른쪽 세로선 없음)
     week_title = f"This Week: {habit_week_text} Week"
     week_line = pad_line("│  ", week_title)
 
-    # 가로 구분선 (오른쪽 세로선 없음)
-    separator = "│  " + ("━" * (box_width - len("│  ")))
+    separator = "│  " + ("━" * (box_width - len("│  ")))  # 오른쪽 │ 없음
 
     def format_activity_line(emoji, name, count, target, bar, rate):
         rate_str = f"{rate:>3}%"
@@ -300,7 +300,6 @@ def generate_dashboard():
 {separator}
 {total_line}
 {bottom_border}
-
     
     # README 생성
     readme = f"""<div align="center">
