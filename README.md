@@ -10,42 +10,51 @@
 
 ## 📊 Progress Dashboard
 
-```text
-🔥 Streak: 3d | 🏆 Best: 3d | 📅 Total: 3d
-
-This Week: 1st Week
-💪 Fitness   1/3  ▰░░░░   33%
-🗣️ English   1/4  ▰░░░░   25%
-🔬 Research  1/5  ▰░░░░   20%
-Total: 4h 54m active this week
-```
-
----
-
-## 📈 이번 달 (12월)
-
-| 💪 헬스 | 🗣️ 영어 | 🔬 연구 |
-|:---:|:---:|:---:|
-| 1h 24m | 0h 30m | 3h |
-| 1일 | 1일 | 1일 |
-
-## 🏆 2025년 통계
-
 <div align="center">
 
-| 총 활동 일수 | 헬스 | 영어 | 연구 |
-|:---:|:---:|:---:|:---:|
-| **3일** | 1h 24m | 0h 30m | 3h |
+🔥 **Streak**: **3 days**  •  🏆 **Best**: **3 days**  •  📅 **Total Active**: **3 days**
 
 </div>
 
-## 📅 최근 7일
+### 📅 This Week · 1st Week
+
+| Habit | Progress | Goal | Status |
+|---|---:|---:|---:|
+| 💪 Fitness | ▰░░░░ | 1 / 3 | 33% |
+| 🗣️ English | ▰▰░░░ | 2 / 4 | 50% |
+| 🔬 Research | ░░░░░ | 0 / 5 | 0% |
+
+**⏱ Total:** **2h 24m** active this week
+
+
+### 📈 This Month (12월)
+
+| 💪 Fitness | 🗣️ English | 🔬 Research |
+|:--:|:--:|:--:|
+| **1h 24m** | **1h** | **0h** |
+| 1 day(s) | 2 day(s) | 0 day(s) |
+
+
+### 🏆 2025 Overview
 
 <div align="center">
 
-`12/14` ⬜&nbsp;&nbsp;`12/15` ⬜&nbsp;&nbsp;`12/16` ⬜&nbsp;&nbsp;`12/17` ⬜&nbsp;&nbsp;`12/18` 🗣️&nbsp;&nbsp;`12/19` 💪&nbsp;&nbsp;`12/20` 🔬&nbsp;&nbsp;
+| Active Days | 💪 Fitness | 🗣️ English | 🔬 Research |
+|---:|---:|---:|---:|
+| **3** | 1h 24m | 1h | **0h** |
 
 </div>
+
+
+### 📆 Last 7 Days
+
+`12/14`  ⬜
+`12/15`  ⬜
+`12/16`  ⬜
+`12/17`  ⬜
+`12/18`  🗣️
+`12/19`  💪
+`12/20`  🗣️
 
 ---
 
