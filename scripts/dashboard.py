@@ -258,44 +258,47 @@ def generate_dashboard():
     english_bar = make_progress_bar(week_english_count, weekly_targets['english'])
     research_bar = make_progress_bar(week_research_count, weekly_targets['research'])
     
-    # 스트릭 & 달성률 카드 생성 (박스 스타일, 동적 정렬)
+    # 스트릭 & 달성률 카드 생성 (실제 렌더링 기준 정렬)
     
-    # 최대 너비 계산
-    max_count_width = max(len(f"{week_fitness_count}/{weekly_targets['fitness']}"),
-                         len(f"{week_english_count}/{weekly_targets['english']}"),
-                         len(f"{week_research_count}/{weekly_targets['research']}"))
+    # 고정 박스 너비
+    box_width = 68  # 약간 줄임
     
-    max_percent_width = max(len(f"{fitness_rate}%"), 
-                            len(f"{english_rate}%"), 
-                            len(f"{research_rate}%"))
+    # 스트릭 라인 - 수동으로 공백 조정
+    streak_line = f"│  🔥 Streak: {current_streak:>4} days     🏆 Best: {best_streak:>4} days     📅 Total: {total_active_days:>4} days  │"
     
-    # 각 줄 생성 (동적 패딩)
-    def format_line(emoji, name, count, target, bar, rate):
-        count_str = f"{count}/{target}"
-        rate_str = f"{rate}%"
-        star = "  ⭐" if rate >= 100 else ""
-        return f"│  {emoji} {name:8s}  {count_str:>{max_count_width}}  {bar}  {rate_str:>{max_percent_width}}{star:4s}  │"
+    # 주간 제목
+    week_line = f"│  This Week: {habit_week_text} Week" + " " * (box_width - 20 - len(habit_week_text)) + "│"
     
-    fitness_line = format_line("💪", "Fitness", week_fitness_count, weekly_targets['fitness'], fitness_bar, fitness_rate)
-    english_line = format_line("🗣️", "English", week_english_count, weekly_targets['english'], english_bar, english_rate)
-    research_line = format_line("🔬", "Research", week_research_count, weekly_targets['research'], research_bar, research_rate)
+    # 각 활동 라인
+    def format_activity_line(emoji, name, count, target, bar, rate):
+        rate_str = f"{rate:>3}%"
+        star = " ⭐" if rate >= 100 else "   "
+        # 고정 포맷
+        return f"│  {emoji} {name:10s}  {count:>2}/{target}  {bar}  {rate_str}{star}" + " " * 16 + "│"
     
-    # 박스 너비 계산
-    box_width = 59
+    fitness_line = format_activity_line("💪", "Fitness", week_fitness_count, weekly_targets['fitness'], fitness_bar, fitness_rate)
+    english_line = format_activity_line("🗣️", "English", week_english_count, weekly_targets['english'], english_bar, english_rate)
+    research_line = format_activity_line("🔬", "Research", week_research_count, weekly_targets['research'], research_bar, research_rate)
+    
+    # 총 시간
+    total_line = f"│  Total: {format_time(week_total_time)} active this week" + " " * (box_width - 32 - len(format_time(week_total_time))) + "│"
+    
+    # 구분선
+    separator = "│  " + "━" * (box_width - 6) + "  │"
     
     achievement_card = f"""```
 ┌{'─' * (box_width - 2)}┐
-│  🔥 {current_streak} days streak    🏆 Best: {best_streak} days    📅 Total: {total_active_days} days{' ' * (box_width - 54 - len(str(current_streak)) - len(str(best_streak)) - len(str(total_active_days)))}│
+{streak_line}
 └{'─' * (box_width - 2)}┘
 
 ┌{'─' * (box_width - 2)}┐
-│  This Week: {habit_week_text} Week{' ' * (box_width - 22 - len(habit_week_text))}│
-│  {'━' * (box_width - 4)}  │
+{week_line}
+{separator}
 {fitness_line}
 {english_line}
 {research_line}
-│  {'━' * (box_width - 4)}  │
-│  Total: {format_time(week_total_time)} active this week{' ' * (box_width - 33 - len(format_time(week_total_time)))}│
+{separator}
+{total_line}
 └{'─' * (box_width - 2)}┘
 ```
 """
