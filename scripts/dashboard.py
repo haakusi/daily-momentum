@@ -258,22 +258,21 @@ def generate_dashboard():
     english_bar = make_progress_bar(week_english_count, weekly_targets['english'])
     research_bar = make_progress_bar(week_research_count, weekly_targets['research'])
     
-    # 스트릭 & 달성률 카드 생성
-    achievement_card = f"""```
-┌─────────────────────────────────────────────────────────┐
-│  🔥 Streak: {current_streak} days    🏆 Best: {best_streak} days    📅 Total: {total_active_days} days  │
-└─────────────────────────────────────────────────────────┘
+    # 스트릭 & 달성률 카드 생성 (동적 너비 조정)
+    # 스트릭 카드 - 심플하게
+    streak_line = f"🔥 {current_streak} days streak    🏆 Best: {best_streak} days    📅 Total: {total_active_days} days"
+    
+    # 주간 카드 - 깔끔하게
+    achievement_card = f"""
+**📊 {habit_week_text} Week**
 
-┌─────────────────────────────────────────────────────────┐
-│  This Week: {habit_week_text} Week                                │
-│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
-│  💪 Fitness    {week_fitness_count}/{weekly_targets['fitness']}  {fitness_bar}  {fitness_rate}%{'  ⭐' if fitness_rate >= 100 else ''}          │
-│  🗣️ English    {week_english_count}/{weekly_targets['english']}  {english_bar}  {english_rate}%{'  ⭐' if english_rate >= 100 else ''}          │
-│  🔬 Research   {week_research_count}/{weekly_targets['research']}  {research_bar}  {research_rate}%{'  ⭐' if research_rate >= 100 else ''}          │
-│  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  │
-│  Total: {format_time(week_total_time)} active this week                      │
-└─────────────────────────────────────────────────────────┘
-```
+| Activity | Progress | Rate |
+|:---------|:--------:|-----:|
+| 💪 Fitness | {week_fitness_count}/{weekly_targets['fitness']} {fitness_bar} | {fitness_rate}%{'⭐' if fitness_rate >= 100 else ''} |
+| 🗣️ English | {week_english_count}/{weekly_targets['english']} {english_bar} | {english_rate}%{'⭐' if english_rate >= 100 else ''} |
+| 🔬 Research | {week_research_count}/{weekly_targets['research']} {research_bar} | {research_rate}%{'⭐' if research_rate >= 100 else ''} |
+
+**⏱️ {format_time(week_total_time)}** total this week · {streak_line}
 """
     
     # README 생성
@@ -286,8 +285,6 @@ def generate_dashboard():
 </div>
 
 ---
-
-## 📊 Progress Dashboard
 
 {achievement_card}
 
@@ -323,7 +320,7 @@ def generate_dashboard():
     
     # 독서 목록
     if recent_books:
-        readme += "## 📚 읽고 있는 페이퍼/책\n\n"
+        readme += "## 📚 읽고 있는 책\n\n"
         for book in recent_books:
             readme += f"- **{book['title']}**"
             if book.get('notes'):
