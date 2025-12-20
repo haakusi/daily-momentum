@@ -1,0 +1,35 @@
+{
+  "daily": {
+    "2025-12-17": {
+      "fitness": 0,
+      "english": 30,
+      "research": 0,
+      "reading": null
+    }
+  },
+  "weekly": {
+    "2025-W51": {
+      "fitness": 0,
+      "english": 30,
+      "research": 0,
+      "days": 0
+    }
+  },
+  "monthly": {
+    "2025-12": {
+      "fitness": 0,
+      "english": 30,
+      "research": 0,
+      "days": 0
+    }
+  },
+  "yearly": {
+    "2025": {
+      "fitness": 0,
+      "english": 30,
+      "research": 0,
+      "days": 1
+    }
+  },
+  "books": []
+}
