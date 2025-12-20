@@ -328,6 +328,39 @@ def update_book_log(data):
     with open(book_file, 'w', encoding='utf-8') as f:
         f.write(content)
 
+def parse_date_from_body(body):
+    """Issue 본문에서 날짜 추출"""
+    if not body:
+        return None
+    
+    lines = body.split('\n')
+    for line in lines[:5]:  # 처음 5줄만 확인
+        line = line.strip()
+        if '📅' in line:
+            # 📅 2025-12-18 형식
+            date_part = line.split('📅', 1)[1].strip()
+            patterns = [
+                r'(\d{4})[-./ ](\d{1,2})[-./ ](\d{1,2})',  # 2024-12-19
+                r'(\d{1,2})[-./ ](\d{1,2})',  # 12-19
+            ]
+            
+            for pattern in patterns:
+                match = re.search(pattern, date_part)
+                if match:
+                    groups = match.groups()
+                    if len(groups) == 3:
+                        year, month, day = int(groups[0]), int(groups[1]), int(groups[2])
+                    else:
+                        year = datetime.now(KST).year
+                        month, day = int(groups[0]), int(groups[1])
+                    
+                    try:
+                        return KST.localize(datetime(year, month, day))
+                    except ValueError:
+                        continue
+    
+    return None
+
 def parse_date_from_title(title):
     """Issue 제목에서 날짜 추출"""
     if not title:
@@ -366,13 +399,15 @@ def main():
         print("No issue body found")
         return
     
-    # 제목에서 날짜 파싱 시도, 없으면 현재 시간 사용
-    now = parse_date_from_title(issue_title)
+    # 본문에서 먼저 날짜 찾기, 없으면 제목에서, 그것도 없으면 현재 시간
+    now = parse_date_from_body(issue_body)
+    if now is None:
+        now = parse_date_from_title(issue_title)
     if now is None:
         now = datetime.now(KST)
         print(f"Using current date: {now.strftime('%Y-%m-%d')}")
     else:
-        print(f"Using date from title: {now.strftime('%Y-%m-%d')}")
+        print(f"Using date: {now.strftime('%Y-%m-%d')}")
     
     # Issue 파싱
     data = parse_issue_body(issue_body)
