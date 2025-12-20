@@ -41,6 +41,9 @@ def parse_time(time_str):
 
 def parse_issue_body(body):
     """Issue 본문 파싱"""
+    # HTML 주석 제거
+    body = re.sub(r'<!--.*?-->', '', body, flags=re.DOTALL)
+    
     lines = body.split('\n')
     
     result = {
@@ -58,6 +61,8 @@ def parse_issue_body(body):
         # 💪 헬스
         if '💪' in line:
             parts = line.split('💪', 1)[1].strip()
+            if not parts:  # 비어있으면 스킵
+                continue
             time_part = parts.split('-')[0].strip() if '-' in parts else parts
             result['fitness']['time'] = parse_time(time_part)
             if '-' in parts:
@@ -66,6 +71,8 @@ def parse_issue_body(body):
         # 🗣️ 영어
         elif '🗣️' in line or '🗣' in line:
             parts = line.split('🗣️' if '🗣️' in line else '🗣', 1)[1].strip()
+            if not parts:  # 비어있으면 스킵
+                continue
             time_part = parts.split('-')[0].strip() if '-' in parts else parts
             result['english']['time'] = parse_time(time_part)
             if '-' in parts:
@@ -74,6 +81,8 @@ def parse_issue_body(body):
         # 🔬 연구
         elif '🔬' in line:
             parts = line.split('🔬', 1)[1].strip()
+            if not parts:  # 비어있으면 스킵
+                continue
             time_part = parts.split('-')[0].strip() if '-' in parts else parts
             result['research']['time'] = parse_time(time_part)
             if '-' in parts:
@@ -82,6 +91,8 @@ def parse_issue_body(body):
         # 📚 독서
         elif '📚' in line:
             parts = line.split('📚', 1)[1].strip()
+            if not parts:  # 비어있으면 스킵
+                continue
             if '-' in parts:
                 result['reading']['title'] = parts.split('-')[0].strip()
                 result['reading']['note'] = parts.split('-', 1)[1].strip()
