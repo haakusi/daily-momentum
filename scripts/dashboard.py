@@ -241,66 +241,38 @@ def generate_dashboard():
     english_bar = make_progress_bar(week_english_count, weekly_targets['english'])
     research_bar = make_progress_bar(week_research_count, weekly_targets['research'])
 
-    # =========================
-    # Progress Dashboard 카드 생성
-    # - 오른쪽 세로선 제거(깨짐 방지)
-    # - 가로폭 확대
-    # =========================
-    box_width = 100  # 더 길게: 110/120 가능
-
-    top_border = "┌" + ("─" * (box_width - 2)) + "┐"
-    bottom_border = "└" + ("─" * (box_width - 2)) + "┘"
-
-    def pad_line(prefix: str, content: str) -> str:
-        """
-        왼쪽 '│'는 유지하고, 오른쪽 끝 '│'는 없앤 형태로 폭을 맞춤.
-        GitHub에서 이모지/가변폭 문자로 인해 오른쪽 테두리 깨지는 현상 방지.
-        """
-        raw = prefix + content
-        if len(raw) >= box_width:
-            return raw[:box_width]
-        return raw + (" " * (box_width - len(raw)))
-
-    streak_content = (
-        f"🔥 Streak: {current_streak:>4} days     "
-        f"🏆 Best: {best_streak:>4} days     "
-        f"📅 Total: {total_active_days:>4} days"
-    )
-    streak_line = pad_line("│  ", streak_content)
-
-    week_title = f"This Week: {habit_week_text} Week"
-    week_line = pad_line("│  ", week_title)
-
-    separator = "│  " + ("━" * (box_width - len("│  ")))  # 오른쪽 │ 없음
+    # 라인 포맷(너무 길면 줄여서 가로 스크롤 방지)
+    def clamp(s: str, max_len: int = 72) -> str:
+        return s if len(s) <= max_len else (s[: max_len - 1] + "…")
 
     def format_activity_line(emoji, name, count, target, bar, rate):
         rate_str = f"{rate:>3}%"
-        star = " ⭐" if rate >= 100 else "   "
-        text = f"{emoji} {name:12s}  {count:>2}/{target}  {bar}  {rate_str}{star}"
-        return pad_line("│  ", text)
+        star = " ⭐" if rate >= 100 else ""
+        # 길이 짧게 유지 (오른쪽 테두리 없음)
+        line = f"{emoji} {name:8s} {count:>2}/{target}  {bar}  {rate_str}{star}"
+        return clamp(line, 72)
+
+    streak_line = clamp(
+        f"🔥 Streak: {current_streak}d | 🏆 Best: {best_streak}d | 📅 Total: {total_active_days}d",
+        72
+    )
+    week_title_line = clamp(f"This Week: {habit_week_text} Week", 72)
 
     fitness_line = format_activity_line("💪", "Fitness", week_fitness_count, weekly_targets['fitness'], fitness_bar, fitness_rate)
     english_line = format_activity_line("🗣️", "English", week_english_count, weekly_targets['english'], english_bar, english_rate)
     research_line = format_activity_line("🔬", "Research", week_research_count, weekly_targets['research'], research_bar, research_rate)
 
-    total_text = f"Total: {format_time(week_total_time)} active this week"
-    total_line = pad_line("│  ", total_text)
+    total_line = clamp(f"Total: {format_time(week_total_time)} active this week", 72)
 
-    achievement_card = f"""```
-{top_border}
-{streak_line}
-{bottom_border}
-
-{top_border}
-{week_line}
-{separator}
-{fitness_line}
-{english_line}
-{research_line}
-{separator}
-{total_line}
-{bottom_border}
-```"""
+    achievement_card = "```text\n" + "\n".join([
+        streak_line,
+        "",
+        week_title_line,
+        fitness_line,
+        english_line,
+        research_line,
+        total_line
+    ]) + "\n```"
     
     # README 생성
     readme = f"""<div align="center">
