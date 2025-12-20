@@ -258,21 +258,46 @@ def generate_dashboard():
     english_bar = make_progress_bar(week_english_count, weekly_targets['english'])
     research_bar = make_progress_bar(week_research_count, weekly_targets['research'])
     
-    # 스트릭 & 달성률 카드 생성 (동적 너비 조정)
-    # 스트릭 카드 - 심플하게
-    streak_line = f"🔥 {current_streak} days streak    🏆 Best: {best_streak} days    📅 Total: {total_active_days} days"
+    # 스트릭 & 달성률 카드 생성 (박스 스타일, 동적 정렬)
     
-    # 주간 카드 - 깔끔하게
-    achievement_card = f"""
-**📊 {habit_week_text} Week**
+    # 최대 너비 계산
+    max_count_width = max(len(f"{week_fitness_count}/{weekly_targets['fitness']}"),
+                         len(f"{week_english_count}/{weekly_targets['english']}"),
+                         len(f"{week_research_count}/{weekly_targets['research']}"))
+    
+    max_percent_width = max(len(f"{fitness_rate}%"), 
+                            len(f"{english_rate}%"), 
+                            len(f"{research_rate}%"))
+    
+    # 각 줄 생성 (동적 패딩)
+    def format_line(emoji, name, count, target, bar, rate):
+        count_str = f"{count}/{target}"
+        rate_str = f"{rate}%"
+        star = "  ⭐" if rate >= 100 else ""
+        return f"│  {emoji} {name:8s}  {count_str:>{max_count_width}}  {bar}  {rate_str:>{max_percent_width}}{star:4s}  │"
+    
+    fitness_line = format_line("💪", "Fitness", week_fitness_count, weekly_targets['fitness'], fitness_bar, fitness_rate)
+    english_line = format_line("🗣️", "English", week_english_count, weekly_targets['english'], english_bar, english_rate)
+    research_line = format_line("🔬", "Research", week_research_count, weekly_targets['research'], research_bar, research_rate)
+    
+    # 박스 너비 계산
+    box_width = 59
+    
+    achievement_card = f"""```
+┌{'─' * (box_width - 2)}┐
+│  🔥 {current_streak} days streak    🏆 Best: {best_streak} days    📅 Total: {total_active_days} days{' ' * (box_width - 54 - len(str(current_streak)) - len(str(best_streak)) - len(str(total_active_days)))}│
+└{'─' * (box_width - 2)}┘
 
-| Activity | Progress | Rate |
-|:---------|:--------:|-----:|
-| 💪 Fitness | {week_fitness_count}/{weekly_targets['fitness']} {fitness_bar} | {fitness_rate}%{'⭐' if fitness_rate >= 100 else ''} |
-| 🗣️ English | {week_english_count}/{weekly_targets['english']} {english_bar} | {english_rate}%{'⭐' if english_rate >= 100 else ''} |
-| 🔬 Research | {week_research_count}/{weekly_targets['research']} {research_bar} | {research_rate}%{'⭐' if research_rate >= 100 else ''} |
-
-**⏱️ {format_time(week_total_time)}** total this week · {streak_line}
+┌{'─' * (box_width - 2)}┐
+│  This Week: {habit_week_text} Week{' ' * (box_width - 22 - len(habit_week_text))}│
+│  {'━' * (box_width - 4)}  │
+{fitness_line}
+{english_line}
+{research_line}
+│  {'━' * (box_width - 4)}  │
+│  Total: {format_time(week_total_time)} active this week{' ' * (box_width - 33 - len(format_time(week_total_time)))}│
+└{'─' * (box_width - 2)}┘
+```
 """
     
     # README 생성
@@ -285,6 +310,8 @@ def generate_dashboard():
 </div>
 
 ---
+
+## 📊 Progress Dashboard
 
 {achievement_card}
 
