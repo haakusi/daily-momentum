@@ -12,9 +12,9 @@
 
 <div align="center">
 
-🔥 **Streak:** **6 days** &nbsp; • &nbsp;
-🏆 **Best:** **6 days** &nbsp; • &nbsp;
-📅 **Total Active:** **6 days**
+🔥 **Streak:** **7 days** &nbsp; • &nbsp;
+🏆 **Best:** **7 days** &nbsp; • &nbsp;
+📅 **Total Active:** **7 days**
 
 </div>
 
@@ -31,10 +31,10 @@
 | Habit | Progress | Goal | Completion |
 |---|---:|---:|---:|
 | 💪 Fitness | ▰░░░░ | 1 / 3 | 33% |
-| 🗣️ English | ▰▰░░░ | 2 / 4 | 50% |
+| 🗣️ English | ▰▰▰░░ | 3 / 4 | 75% |
 | 🔬 Research | ░░░░░ | 0 / 5 | 0% |
 
-**⏱ Total time:** **2h 6m** this week
+**⏱ Total time:** **2h 26m** this week
 
 <br/>
 
@@ -48,8 +48,8 @@
 
 | 💪 Fitness | 🗣️ English | 🔬 Research |
 |:--:|:--:|:--:|
-| **3h 42m** | **1h 30m** | **0h** |
-| 3 day(s) | 3 day(s) | 0 day(s) |
+| **3h 42m** | **1h 50m** | **0h** |
+| 3 day(s) | 4 day(s) | 0 day(s) |
 
 <br/>
 
@@ -65,7 +65,7 @@
 
 | Active Days | 💪 Fitness | 🗣️ English | 🔬 Research |
 |---:|---:|---:|---:|
-| **6** | 3h 42m | 1h 30m | **0h** |
+| **7** | 3h 42m | 1h 50m | **0h** |
 
 </div>
 
@@ -80,7 +80,7 @@
 `12/21`  ⬜
 `12/22`  🗣️
 `12/23`  🗣️
-`12/24`  ⬜
+`12/24`  🗣️
 `12/25`  ⬜
 `12/26`  💪
 `12/27`  ⬜
