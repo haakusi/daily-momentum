@@ -13,7 +13,7 @@
       "reading": null
     },
     "2025-12-20": {
-      "fitness": 72,
+      "fitness": 84,
       "english": 0,
       "research": 0,
       "reading": null
@@ -57,7 +57,7 @@
   },
   "weekly": {
     "2025-W51": {
-      "fitness": 156,
+      "fitness": 168,
       "english": 30,
       "research": 0,
       "days": 0
@@ -71,7 +71,7 @@
   },
   "monthly": {
     "2025-12": {
-      "fitness": 294,
+      "fitness": 306,
       "english": 110,
       "research": 60,
       "days": 0
@@ -79,7 +79,7 @@
   },
   "yearly": {
     "2025": {
-      "fitness": 294,
+      "fitness": 306,
       "english": 110,
       "research": 60,
       "days": 9
