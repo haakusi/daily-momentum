@@ -12,9 +12,9 @@
 
 <div align="center">
 
-🔥 **Streak:** **8 days** &nbsp; • &nbsp;
-🏆 **Best:** **8 days** &nbsp; • &nbsp;
-📅 **Total Active:** **8 days**
+🔥 **Streak:** **9 days** &nbsp; • &nbsp;
+🏆 **Best:** **9 days** &nbsp; • &nbsp;
+📅 **Total Active:** **9 days**
 
 </div>
 
@@ -32,9 +32,9 @@
 |---|---:|---:|---:|
 | 💪 Fitness | ▰▰▰░░ | 2 / 3 | 66% |
 | 🗣️ English | ▰▰▰░░ | 3 / 4 | 75% |
-| 🔬 Research | ░░░░░ | 0 / 5 | 0% |
+| 🔬 Research | ▰░░░░ | 1 / 5 | 20% |
 
-**⏱ Total time:** **3h 38m** this week
+**⏱ Total time:** **4h 38m** this week
 
 <br/>
 
@@ -48,8 +48,8 @@
 
 | 💪 Fitness | 🗣️ English | 🔬 Research |
 |:--:|:--:|:--:|
-| **4h 54m** | **1h 50m** | **0h** |
-| 4 day(s) | 4 day(s) | 0 day(s) |
+| **4h 54m** | **1h 50m** | **1h** |
+| 4 day(s) | 4 day(s) | 1 day(s) |
 
 <br/>
 
@@ -65,7 +65,7 @@
 
 | Active Days | 💪 Fitness | 🗣️ English | 🔬 Research |
 |---:|---:|---:|---:|
-| **8** | 4h 54m | 1h 50m | **0h** |
+| **9** | 4h 54m | 1h 50m | **1h** |
 
 </div>
 
@@ -77,13 +77,13 @@
 
 ### 📆 Last 7 Days
 
-`12/21`  ⬜
 `12/22`  🗣️
 `12/23`  🗣️
 `12/24`  🗣️
 `12/25`  ⬜
 `12/26`  💪
 `12/27`  💪
+`12/28`  🔬
 
 <br/>
 
