@@ -12,7 +12,7 @@
 
 <div align="center">
 
-🔥 **Streak:** **9 days** &nbsp; • &nbsp;
+🔥 **Streak:** **0 days** &nbsp; • &nbsp;
 🏆 **Best:** **9 days** &nbsp; • &nbsp;
 📅 **Total Active:** **9 days**
 
