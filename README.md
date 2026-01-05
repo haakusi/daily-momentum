@@ -12,9 +12,9 @@
 
 <div align="center">
 
-🔥 **Streak:** **0 days** &nbsp; • &nbsp;
+🔥 **Streak:** **1 days** &nbsp; • &nbsp;
 🏆 **Best:** **9 days** &nbsp; • &nbsp;
-📅 **Total Active:** **9 days**
+📅 **Total Active:** **1 days**
 
 </div>
 
@@ -24,17 +24,17 @@
 
 <br/>
 
-### 📅 This Week · 2nd Week
+### 📅 This Week · 3rd Week
 
 *Focus on consistency. Progress resets every Monday.*
 
 | Habit | Progress | Goal | Completion |
 |---|---:|---:|---:|
-| 💪 Fitness | ░░░░░ | 0 / 3 | 0% |
+| 💪 Fitness | ▰░░░░ | 1 / 3 | 33% |
 | 🗣️ English | ░░░░░ | 0 / 4 | 0% |
 | 🔬 Research | ░░░░░ | 0 / 5 | 0% |
 
-**⏱ Total time:** **0h** this week
+**⏱ Total time:** **1h 12m** this week
 
 <br/>
 
@@ -42,14 +42,14 @@
 
 <br/>
 
-### 📈 This Month · December
+### 📈 This Month · January
 
 *Accumulated effort over the current month.*
 
 | 💪 Fitness | 🗣️ English | 🔬 Research |
 |:--:|:--:|:--:|
-| **5h 6m** | **1h 50m** | **1h** |
-| 4 day(s) | 4 day(s) | 1 day(s) |
+| **1h 12m** | **0h** | **0h** |
+| 1 day(s) | 0 day(s) | 0 day(s) |
 
 <br/>
 
@@ -57,7 +57,7 @@
 
 <br/>
 
-### 🏆 2025 Overview
+### 🏆 2026 Overview
 
 *High-level snapshot of the year so far.*
 
@@ -65,7 +65,7 @@
 
 | Active Days | 💪 Fitness | 🗣️ English | 🔬 Research |
 |---:|---:|---:|---:|
-| **9** | 5h 6m | 1h 50m | **1h** |
+| **1** | 1h 12m | 0h | **0h** |
 
 </div>
 
@@ -77,13 +77,13 @@
 
 ### 📆 Last 7 Days
 
-`12/23`  🗣️
-`12/24`  🗣️
-`12/25`  ⬜
-`12/26`  💪
-`12/27`  💪
-`12/28`  🔬
-`12/29`  ⬜
+`12/31`  ⬜
+`01/01`  ⬜
+`01/02`  ⬜
+`01/03`  ⬜
+`01/04`  ⬜
+`01/05`  ⬜
+`01/06`  💪
 
 <br/>
 
