@@ -65,6 +65,12 @@
       "english": 0,
       "research": 0,
       "reading": null
+    },
+    "2026-01-08": {
+      "fitness": 0,
+      "english": 30,
+      "research": 0,
+      "reading": null
     }
   },
   "weekly": {
@@ -88,7 +94,7 @@
     },
     "2026-W02": {
       "fitness": 72,
-      "english": 0,
+      "english": 30,
       "research": 0,
       "days": 0
     }
@@ -102,7 +108,7 @@
     },
     "2026-01": {
       "fitness": 72,
-      "english": 0,
+      "english": 30,
       "research": 0,
       "days": 0
     }
@@ -116,9 +122,9 @@
     },
     "2026": {
       "fitness": 72,
-      "english": 0,
+      "english": 30,
       "research": 0,
-      "days": 1
+      "days": 2
     }
   },
   "books": []
